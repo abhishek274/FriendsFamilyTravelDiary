@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en"  xmlns:th="http://www.thymeleaf.org" th:replace="base::Layout(~{::section})">
+<head>
+    <meta charset="UTF-8">
+    <title>Events Home</title>
+</head>
+<body>
+
+<section>
+
+    <table class="table table-striped">
+        <tbody id="event-table">
+        <tr th:each="event : ${allEvents}">
+
+            <td>
+                <a th:href="@{/s3/event/{eventId}(eventId=${event.eventId})}" class="btn btn-success" th:text="${event.eventName}"></a>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+
+
+    <form id="add-event-form" th:action="@{/s3/event/add}" method="post" enctype="multipart/form-data">
+        <div class="form-group">
+            <label for="event">Event Name :</label>
+            <input type="text" class="form-control" id="event" name="event" required>
+        </div>
+        <button type="submit" class="btn btn-primary btn-block">Add Event</button>
+    </form>
+</section>
+
+<script>
+  document.getElementById("add-event-form").addEventListener("submit", function(event) {
+    event.preventDefault(); // prevent the form from submitting
+
+    // get the event name from the input field
+    const eventName = document.getElementById("event").value;
+
+    // create a new table row with the event name
+    const newRow = document.createElement("tr");
+    newRow.innerHTML = `<td><label>${eventName}</label></td>`;
+
+    // add the new row to the table
+    document.getElementById("event-table").appendChild(newRow);
+
+    // reset the form
+    document.getElementById("add-event-form").reset();
+  });
+</script>
+
+</body>
+</html>
